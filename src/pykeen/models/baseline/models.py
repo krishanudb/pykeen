@@ -104,8 +104,6 @@ class MarginalDistributionBaseline(EvaluationOnlyModel):
         """
         super().__init__(triples_factory=triples_factory)
         
-        self.device = torch.device("cpu")
-
         h, r, t = numpy.asarray(triples_factory.mapped_triples).T
         if relation_margin:
             self.head_per_relation, self.tail_per_relation = [
@@ -130,6 +128,12 @@ class MarginalDistributionBaseline(EvaluationOnlyModel):
         else:
             self.head_per_tail = self.tail_per_head = None
 
+    @property
+    def device(self) -> torch.device:
+        """Return the model's device."""
+        return torch.device("cpu")
+    
+    
     # docstr-coverage: inherited
     def score_t(self, hr_batch: torch.LongTensor, **kwargs) -> torch.FloatTensor:  # noqa: D102
         return marginal_score(
