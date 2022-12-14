@@ -103,6 +103,9 @@ class MarginalDistributionBaseline(EvaluationOnlyModel):
         lead to a uniform distribution, i.e. equal scores for all entities.
         """
         super().__init__(triples_factory=triples_factory)
+        
+        self.device = torch.device("cpu")
+
         h, r, t = numpy.asarray(triples_factory.mapped_triples).T
         if relation_margin:
             self.head_per_relation, self.tail_per_relation = [
